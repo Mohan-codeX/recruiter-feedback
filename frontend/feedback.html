@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Feedback Results</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .feedback {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .recruiter {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .feedback p {
+            margin: 8px 0;
+        }
+
+        .date {
+            color: #666;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Recruiter Feedback Results</h1>
+
+    <div id="feedbackList">
+        Loading feedback...
+    </div>
+
+</div>
+
+<script>
+
+    async function loadFeedback() {
+
+        const response = await fetch("/api/feedback");
+
+        const feedbackList = await response.json();
+
+        const container =
+            document.getElementById("feedbackList");
+
+        container.innerHTML = "";
+
+        feedbackList.forEach(function(feedback) {
+
+            const card = document.createElement("div");
+
+            card.className = "feedback";
+
+            card.innerHTML = `
+
+                <div class="recruiter">
+
+                    <p>
+                        <strong>Name:</strong>
+                        ${feedback.recruiter_name || "Not provided"}
+                    </p>
+
+                    <p>
+                        <strong>Designation:</strong>
+                        ${feedback.designation || "Not provided"}
+                    </p>
+
+                    <p>
+                        <strong>Company:</strong>
+                        ${feedback.company_name || "Not provided"}
+                    </p>
+
+                </div>
+
+                <p>
+                    <strong>Overall Rating:</strong>
+                    ${feedback.overall_rating}/5
+                </p>
+
+                <p>
+                    <strong>Practical DevOps Skills:</strong>
+                    ${feedback.devops_skills}
+                </p>
+
+                <p>
+                    <strong>Documentation:</strong>
+                    ${feedback.documentation}
+                </p>
+
+                <p>
+                    <strong>Production Thinking:</strong>
+                    ${feedback.production_thinking}
+                </p>
+
+                <p>
+                    <strong>Proceed to Next Round:</strong>
+                    ${feedback.next_round}
+                </p>
+
+                <p>
+                    <strong>Comments:</strong>
+                    ${feedback.comments || "No comments"}
+                </p>
+
+                <p class="date">
+                    Submitted: ${feedback.created_at}
+                </p>
+            `;
+
+            container.appendChild(card);
+        });
+    }
+
+    loadFeedback();
+
+</script>
+
+</body>
+</html>

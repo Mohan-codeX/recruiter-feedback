@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohan Babu | DevOps Project Feedback</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .name {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #222;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>DevOps Project Feedback</h1>
+
+    <p class="name">M. Mohan Babu</p>
+
+    <p class="intro">
+        Thank you for reviewing my DevOps project.
+        I would appreciate your feedback on my work.
+    </p>
+
+    <form id="feedbackForm">
+
+        <div class="question">
+            <label>Your Name</label>
+            <input
+                type="text"
+                id="recruiter_name"
+                placeholder="Enter your name"
+                required
+            >
+        </div>
+
+        <div class="question">
+            <label>Your Designation</label>
+            <input
+                type="text"
+                id="designation"
+                placeholder="Example: Technical Recruiter"
+                required
+            >
+        </div>
+
+        <div class="question">
+            <label>Company Name</label>
+            <input
+                type="text"
+                id="company_name"
+                placeholder="Enter company name"
+                required
+            >
+        </div>
+
+        <div class="question">
+            <label>1. How would you rate this project overall?</label>
+
+            <select id="overall_rating" required>
+                <option value="">Select</option>
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Very Good</option>
+                <option value="3">3 - Good</option>
+                <option value="2">2 - Fair</option>
+                <option value="1">1 - Needs Improvement</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <label>2. Does this project demonstrate practical DevOps skills?</label>
+
+            <select id="devops_skills" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>Partially</option>
+                <option>No</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <label>3. Is the project documentation clear?</label>
+
+            <select id="documentation" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>Partially</option>
+                <option>No</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <label>4. Does the project demonstrate production-oriented thinking?</label>
+
+            <select id="production_thinking" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>Partially</option>
+                <option>No</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <label>5. Would you consider this candidate for the next interview round?</label>
+
+            <select id="next_round" required>
+                <option value="">Select</option>
+                <option>Yes</option>
+                <option>Maybe</option>
+                <option>No</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <label>6. Comments or suggestions (optional)</label>
+
+            <textarea
+                id="comments"
+                placeholder="Share your feedback..."
+            ></textarea>
+        </div>
+
+        <button type="submit">Submit Feedback</button>
+
+    </form>
+
+    <p id="message"></p>
+
+</div>
+
+<script>
+
+    document
+        .getElementById("feedbackForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const feedback = {
+
+                recruiter_name:
+                    document.getElementById("recruiter_name").value,
+
+                designation:
+                    document.getElementById("designation").value,
+
+                company_name:
+                    document.getElementById("company_name").value,
+
+                overall_rating:
+                    document.getElementById("overall_rating").value,
+
+                devops_skills:
+                    document.getElementById("devops_skills").value,
+
+                documentation:
+                    document.getElementById("documentation").value,
+
+                production_thinking:
+                    document.getElementById("production_thinking").value,
+
+                next_round:
+                    document.getElementById("next_round").value,
+
+                comments:
+                    document.getElementById("comments").value
+            };
+
+
+            const response = await fetch("/api/feedback", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(feedback)
+            });
+
+
+            const result = await response.json();
+
+
+            document.getElementById("message").innerText =
+                result.message;
+
+
+            document
+                .getElementById("feedbackForm")
+                .reset();
+        });
+
+</script>
+
+</body>
+</html>

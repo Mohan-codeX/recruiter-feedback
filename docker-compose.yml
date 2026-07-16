@@ -1,0 +1,49 @@
+services:
+  # 1. Reverse Proxy
+  reverse-proxy:
+    image: reverse-proxy:01
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+      - backend
+
+  # 2. Frontend Nginx Server
+  frontend:
+    image: frontend:01
+    expose:
+      - "80"
+
+  # 3. Python Flask Backend Server
+  backend:
+    image: backend:01
+    expose:
+      - "8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=feedbackdb
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # 4. Official PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: feedbackdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Mount the local initialization script as read-only (:ro)
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d feedbackdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
