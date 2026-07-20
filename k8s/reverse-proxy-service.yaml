@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverse-proxy
+  namespace: recruiter-feedback
+spec:
+  type: ClusterIP
+  selector:
+    app: reverse-proxy
+  ports:
+    - port: 80
+      targetPort: 80

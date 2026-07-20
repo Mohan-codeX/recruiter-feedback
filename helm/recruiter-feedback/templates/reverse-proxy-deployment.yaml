@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reverse-proxy
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.reverseProxy.replicas }}
+  selector:
+    matchLabels:
+      app: reverse-proxy
+  template:
+    metadata:
+      labels:
+        app: reverse-proxy
+    spec:
+      containers:
+        - name: reverse-proxy
+          image: {{ .Values.reverseProxy.image }}
+          ports:
+            - containerPort: {{ .Values.reverseProxy.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.reverseProxy.resources.requests.cpu | quote }}
+              memory: {{ .Values.reverseProxy.resources.requests.memory | quote }}
+            limits:
+              cpu: {{ .Values.reverseProxy.resources.limits.cpu | quote }}
+              memory: {{ .Values.reverseProxy.resources.limits.memory | quote }}
