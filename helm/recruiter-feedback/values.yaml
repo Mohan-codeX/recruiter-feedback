@@ -1,0 +1,50 @@
+postgres:
+  image: "postgres:16-alpine"
+  database: "feedbackdb"
+  user: "postgres"
+  port: 5432
+  storage: "1Gi"
+  accessMode: "ReadWriteOnce"
+
+backend:
+  image: "mohancodex/recruiter-feedback-backend:latest"
+  replicas: 1
+  port: 8000
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+frontend:
+  image: "mohancodex/recruiter-feedback-frontend:latest"
+  replicas: 1
+  port: 80
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+reverseProxy:
+  image: "mohancodex/recruiter-feedback-reverse-proxy:latest"
+  replicas: 1
+  port: 80
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  host: "recruiter-feedback.local"
+  path: "/"
+  pathType: "Prefix"

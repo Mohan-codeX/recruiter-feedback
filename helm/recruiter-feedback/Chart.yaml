@@ -1,0 +1,6 @@
+apiVersion: v2
+name: recruiter-feedback
+description: Helm chart for the Recruiter Feedback Dashboard
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+  namespace: recruiter-feedback
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS feedback (
+        id SERIAL PRIMARY KEY,
+        recruiter_name VARCHAR(100) NOT NULL,
+        designation VARCHAR(100) NOT NULL,
+        company_name VARCHAR(150) NOT NULL,
+        overall_rating INTEGER NOT NULL,
+        devops_skills VARCHAR(20) NOT NULL,
+        documentation VARCHAR(20) NOT NULL,
+        production_thinking VARCHAR(20) NOT NULL,
+        next_round VARCHAR(20) NOT NULL,
+        comments TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
